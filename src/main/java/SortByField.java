@@ -38,8 +38,23 @@ public class SortByField {
 			}
 			try {
 				if (getMethod != null) {
-					return (int) cmpMethodHandle.invokeExact((Comparable<?>) getMethod.invoke(o1),
-							getMethod.invoke(o2));
+					Object obj1=getMethod.invoke(o1);
+					Object obj2=getMethod.invoke(o2);
+					if (obj1 == null && obj2 == null) {
+					    return 0;
+					}
+					if (obj1 == null) {
+					    return 1;
+					}
+					if (obj2 == null) {
+					    return -1;
+					}
+					if(obj1.equals(obj2)) {
+						return 0;
+					}
+					
+					return (int) cmpMethodHandle.invokeExact((Comparable<?>) obj1, obj2);
+					
 					// return (int)cmpMethod.invoke(getMethod.invoke(o1),
 				}
 				if (fieldToGet != null) {
